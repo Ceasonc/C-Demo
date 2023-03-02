@@ -91,7 +91,8 @@ public class HandleImg {
     }
 
 }
-`
+
 效果图
-![输入图片说明](pic/Picture-interval-splicing-1.jpg)
-![输入图片说明](pic/Picture-interval-splicing-2.jpg)
+![test](h![out](https://user-images.githubusercontent.com/71627857/222396358-94a27db8-1303-4767-96b7-fcd5b1a26beb.jpg)
+ttps://user-images.githubusercontent.com/71627857/222396341-9fe22e8f-1c29-49ff-a9df-4475a27049a8.jpg)
+
