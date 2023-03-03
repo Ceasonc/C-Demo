@@ -1,5 +1,5 @@
 有间隔地拼接图片
-`
+```
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
@@ -91,6 +91,7 @@ public class HandleImg {
     }
 
 }
+```
 
 效果图
 ![test](https://user-images.githubusercontent.com/71627857/222396593-2cebab3f-8e8d-4618-a3e5-4fb1b3defc30.jpg)
