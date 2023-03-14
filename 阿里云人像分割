@@ -1,0 +1,72 @@
+```
+package alibabaBody;/*
+引入依赖包
+<!-- https://mvnrepository.com/artifact/com.aliyun/imageseg20191230 -->
+<dependency>
+      <groupId>com.aliyun</groupId>
+      <artifactId>imageseg20191230</artifactId>
+      <version>${aliyun.imageseg.version}</version>
+</dependency>
+*/
+
+import com.aliyun.imageseg20191230.models.SegmentBodyResponse;
+import com.aliyun.tea.TeaException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+
+public class SegmentBody {
+    public static com.aliyun.imageseg20191230.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
+        com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
+                // 必填，您的 AccessKey ID
+                .setAccessKeyId(accessKeyId)
+                // 必填，您的 AccessKey Secret
+                .setAccessKeySecret(accessKeySecret);
+        // 访问的域名
+        config.endpoint = "imageseg.cn-shanghai.aliyuncs.com";
+        return new com.aliyun.imageseg20191230.Client(config);
+    }
+
+    public static void main(String[] args_) throws Exception {
+        // "YOUR_ACCESS_KEY_ID", "YOUR_ACCESS_KEY_SECRET" 的生成请参考https://help.aliyun.com/document_detail/175144.html
+        // 如果您是用的子账号AccessKey，还需要为子账号授予权限AliyunVIAPIFullAccess，请参考https://help.aliyun.com/document_detail/145025.html
+        com.aliyun.imageseg20191230.Client client = SegmentBody.createClient("LTAI5tPARXtj5eLSBSGXyFcN", "7YF4HAmeFmS4o1mJoRgF7bNUwCwVCV");
+        // 场景一，使用本地文件
+         InputStream inputStream = new FileInputStream(new File("d:/AAfile/t1.jpg"));
+        // 场景二，使用任意可访问的url
+//        URL url = new URL("d:/AAfile/t1.jpg");
+//        InputStream inputStream = url.openConnection().getInputStream();
+        com.aliyun.imageseg20191230.models.SegmentBodyAdvanceRequest segmentBodyAdvanceRequest = new com.aliyun.imageseg20191230.models.SegmentBodyAdvanceRequest()
+                .setImageURLObject(inputStream);
+        com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
+        try {
+            SegmentBodyResponse segmentBodyResponse = client.segmentBodyAdvance(segmentBodyAdvanceRequest, runtime);
+            /**  获取url文件到本地 */
+            URL url = new URL(segmentBodyResponse.getBody().getData().getImageURL());
+            inputStream = url.openStream();
+
+            FileOutputStream outputStream = new FileOutputStream("d:/AAfile/image.jpg");
+
+            byte[] buffer = new byte[2048];
+            int length;
+            while ((length = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, length);
+            }
+
+            // Close streams
+            inputStream.close();
+            outputStream.close();
+
+            System.out.println("Image downloaded successfully.");
+        } catch (TeaException teaException) {
+            // 获取整体报错信息
+            System.out.println(com.aliyun.teautil.Common.toJSONString(teaException));
+            // 获取单个字段
+            System.out.println(teaException.getCode());
+        }
+    }
+}
+```
